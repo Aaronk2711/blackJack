@@ -25,9 +25,10 @@ public class BlackJack {
     public void play() {
         turn = true;
         wager();
+        clearHand("player");
+        clearHand("computer");
         shuffleAndDeal();
         takeTurn(false);
-        takeTurn(true);
         endRound();
     }
 
@@ -37,7 +38,7 @@ public class BlackJack {
             System.out.println("How many chips would you like to wager(Min: 1, Max: 25)");
             wager = in.nextInt();
             if (wager > chips) {
-                System.out.println("Sorry, you only have " + chips + " chips remaining, but you wagered " + wager + "chips.");
+                System.out.println("Sorry, you only have " + chips + " chips remaining, but you wagered " + wager + " chips.");
             }
         } while (wager < 1 || wager > 25 || wager > chips);
     }
@@ -70,25 +71,29 @@ public class BlackJack {
     private void takeTurn(boolean cpu) {
         if (!cpu) {
             showHand("initial");
-            String action;
-            do {
+            String action = "x";
+            while (action.equals("H") == false && action.equals("S") == false) {
                 System.out.println("Hit or Stand(H or S)");
                 action = in.nextLine().toUpperCase();
-            } while (action.equals("H") == false && action.equals("S") == false);
+            }
             if (action.equals("H")) {
                 player.takeCard(deck.remove(0));
                 playerScore = player.calculateScore();
-                showHand("player");
-                action = "x";
+                if (playerScore < 21) {
+                    takeTurn(false);
+                } else {
+                    endRound();
+                }
 
-            } else {
+            } else if (action.equals("S")) {
+                takeTurn(true);
             }
-        } else {
-            showHand("computer");
+        } else if (cpu) {
+            showHand("cpu");
             while (computerScore < 17) {
                 computer.takeCard(deck.remove(0));
                 computerScore = computer.calculateScore();
-                showHand("computer");
+                showHand("cpu");
             }
         }
     }
@@ -110,7 +115,7 @@ public class BlackJack {
             System.out.println("You have tied with the computer this round.");
         } else if (playerScore == 21 && player.hand.size() == 2) {
             System.out.println("Congratulations, that is a BlackJack. You have won this round.");
-            chips += (wager * 3/2);
+            chips += (int) (wager * 1.5);
         } else if (computerScore > playerScore && computerScore <= 21) {
             System.out.println("You have lost this round " + playerScore + " to " + computerScore + ".");
             chips -= wager;
@@ -142,6 +147,14 @@ public class BlackJack {
         }
     }
 
+    private void clearHand(String type) {
+        if (type.equals("player")) {
+            player.clearHand();
+        } else if (type.equals("computer")) {
+            computer.clearHand();
+        }
+    }
+
     private void endGame() {
         if (chips <= 0) {
             System.out.println("You ran out of chips and lost.");
@@ -154,20 +167,7 @@ public class BlackJack {
         ////////// MAIN METHOD /////////////////////////////////////////////////////////
 
     public static void main(String[] args) {
-        System.out.println("#########################################################");
-        System.out.println("#                                                       #");
-        System.out.println("#   ####### #######   ####### ####### ####### #     #   #");
-        System.out.println("#   #       #     #   #          #    #       #     #   #");
-        System.out.println("#   #  #### #     #   #####      #    ####### #######   #");
-        System.out.println("#   #     # #     #   #          #          # #     #   #");
-        System.out.println("#   ####### #######   #       ####### ####### #     #   #");
-        System.out.println("#                                                       #");
-        System.out.println("#   A human v. CPU rendition of the classic card game   #");
-        System.out.println("#   Go Fish. Play the game, read and modify the code,   #");
-        System.out.println("#   and make it your own!                               #");
-        System.out.println("#                                                       #");
-        System.out.println("#########################################################");
-
+        System.out.println("BLACKJACK");
         new BlackJack().play();
     }
 }

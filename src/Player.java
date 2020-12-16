@@ -23,6 +23,10 @@ public class Player {
         sortHand();
     }
 
+    public void clearHand() {
+        hand.clear();
+    }
+
     public int calculateScore() {
         int score = 0;
         ArrayList<Integer> scores = new ArrayList<Integer>();
