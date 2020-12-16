@@ -41,6 +41,7 @@ public class BlackJack {
                 System.out.println("Sorry, you only have " + chips + " chips remaining, but you wagered " + wager + " chips.");
             }
         } while (wager < 1 || wager > 25 || wager > chips);
+        in.nextLine();
     }
 
     public void shuffleAndDeal() {
@@ -74,7 +75,7 @@ public class BlackJack {
             String action = "x";
             while (action.equals("H") == false && action.equals("S") == false) {
                 System.out.println("Hit or Stand(H or S)");
-                action = in.nextLine().toUpperCase();
+                action = in.nextLine().trim().toUpperCase();
             }
             if (action.equals("H")) {
                 player.takeCard(deck.remove(0));
@@ -122,6 +123,9 @@ public class BlackJack {
         } else if (playerScore > computerScore && playerScore <= 21) {
             System.out.println("You have won this round " + playerScore + " to " + computerScore + ".");
             chips += wager;
+        }
+        if (chips <= 0) {
+            endGame();
         }
         String answer = "";
         do {
