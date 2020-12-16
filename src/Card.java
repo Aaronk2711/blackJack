@@ -12,6 +12,10 @@ public class Card {
         return rank;
     }
 
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
     public String getSuit() {
         return suit;
     }
@@ -30,7 +34,7 @@ public class Card {
                 case "J": return 10;    // and Aces, we need to apply a
                 case "Q": return 10;    // numeric value to simplify the
                 case "K": return 10;    // sorting of hands and books.
-                case "A": return 0;
+                case "A": return 11;
             }
         }
 

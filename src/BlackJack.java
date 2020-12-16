@@ -80,10 +80,10 @@ public class BlackJack {
             if (action.equals("H")) {
                 player.takeCard(deck.remove(0));
                 playerScore = player.calculateScore();
-                if (playerScore < 21) {
-                    takeTurn(false);
-                } else {
+                if (playerScore > 21) {
                     endRound();
+                } else {
+                    takeTurn(false);
                 }
 
             } else if (action.equals("S")) {

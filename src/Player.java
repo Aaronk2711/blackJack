@@ -29,27 +29,20 @@ public class Player {
 
     public int calculateScore() {
         int score = 0;
-        ArrayList<Integer> scores = new ArrayList<Integer>();
         for (int k = 0; k < hand.size(); k++) {
-            String playerTemp = hand.get(0).getRank();
-            if (playerTemp.equals("A")) {
-                scores.add(11);
-            } else {
-                scores.add(Card.getOrderedRank(hand.get(k).getRank()));
+            if (hand.get(k).getRank() != "A" && hand.get(k).getRank() != "11" && hand.get(k).getRank() != "1") {
+                score += Card.getOrderedRank(hand.get(k).getRank());
             }
         }
-        score = addList(scores);
-        while (score > 21) {
-            if (!scores.contains(11)) {
-                break;
-            }
-            for (int q = 0; q < scores.size(); q++) {
-                if (scores.get(q) == 11) {
-                    scores.set(q,1);
-                    break;
+        for (int h = 0; h<hand.size(); h++) {
+            if (hand.get(h).getRank() == "A" || hand.get(h).getRank() == "11" || hand.get(h).getRank() == "1") {
+                if (score + 11 > 21) {
+                    hand.get(h).setRank("1");
+                } else {
+                    hand.get(h).setRank("11");
                 }
+                score += Card.getOrderedRank(hand.get(h).getRank());
             }
-            score = addList(scores);
         }
         return score;
     }
